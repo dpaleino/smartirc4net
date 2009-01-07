@@ -41,5 +41,8 @@ namespace Meebey.SmartIrc4net
                 return Client;
             }
         }
+
+        public IrcTcpClient() : base() {}
+        public IrcTcpClient(AddressFamily family) : base(family) {}
     }
 }

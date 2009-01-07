@@ -78,6 +78,7 @@ namespace Meebey.SmartIrc4net
         private DateTime         _LastPingSent;
         private DateTime         _LastPongReceived;
         private TimeSpan         _Lag;
+        private bool             _UseIPv6;
         
         /// <event cref="OnReadLine">
         /// Raised when a \r\n terminated line is read from the socket
@@ -388,6 +389,18 @@ namespace Meebey.SmartIrc4net
         }
 
         /// <summary>
+        /// Whether to use (or to prefer) IPv6 over an IPv4 connection
+        /// </summary>
+        public bool UseIPv6 {
+            get {
+                return _UseIPv6;
+            }
+            set {
+                _UseIPv6 = Convert.ToBoolean(value);
+            }
+        }
+
+        /// <summary>
         /// Initializes the message queues, read and write thread
         /// </summary>
         public IrcConnection()
@@ -453,14 +466,18 @@ namespace Meebey.SmartIrc4net
                 OnConnecting(this, EventArgs.Empty);
             }
             try {
-                System.Net.IPAddress ip = System.Net.Dns.Resolve(Address).AddressList[0];
-                _TcpClient = new IrcTcpClient();
+                if (_UseIPv6) {
+                    _TcpClient = new IrcTcpClient(AddressFamily.InterNetworkV6);
+                }
+                else {
+                    _TcpClient = new IrcTcpClient(AddressFamily.InterNetwork);
+                }
                 _TcpClient.NoDelay = true;
                 _TcpClient.Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, 1);
                 // set timeout, after this the connection will be aborted
                 _TcpClient.ReceiveTimeout = _SocketReceiveTimeout * 1000;
                 _TcpClient.SendTimeout = _SocketSendTimeout * 1000;
-                _TcpClient.Connect(ip, port);
+                _TcpClient.Connect(Address, port);
                 
                 Stream stream = _TcpClient.GetStream();
 #if NET_2_0
