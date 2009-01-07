@@ -32,6 +32,7 @@ using System.Text;
 using System.Collections;
 using System.Threading;
 using System.Reflection;
+using System.Net;
 using System.Net.Sockets;
 #if NET_2_0
 using System.Net.Security;
@@ -466,6 +467,8 @@ namespace Meebey.SmartIrc4net
                 OnConnecting(this, EventArgs.Empty);
             }
             try {
+//                IPAddress ip = IPAddress.Parse(Address);
+//                _TcpClient = new IrcTcpClient(ip.AddressFamily);
                 if (_UseIPv6) {
                     _TcpClient = new IrcTcpClient(AddressFamily.InterNetworkV6);
                 }
