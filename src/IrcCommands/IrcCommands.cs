@@ -195,6 +195,16 @@ namespace Meebey.SmartIrc4net
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="nickname"></param>
+        public void Halfop(string channel, string nickname)
+        {
+            WriteLine(Rfc2812.Mode(channel, "+h "+nickname));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="nickname"></param>
         /// <param name="priority"></param>
         public void Voice(string channel, string nickname, Priority priority)
         {

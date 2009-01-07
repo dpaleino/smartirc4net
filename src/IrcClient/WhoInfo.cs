@@ -42,6 +42,7 @@ namespace Meebey.SmartIrc4net
         private string   f_Realname;
         private bool     f_IsAway;
         private bool     f_IsOp;
+        private bool     f_IsHalfop;
         private bool     f_IsVoice;
         private bool     f_IsIrcOp;
         
@@ -99,6 +100,12 @@ namespace Meebey.SmartIrc4net
             }
         }
 
+        public bool IsHalfop {
+            get {
+                return f_IsHalfop;
+            }
+        }
+
         public bool IsVoice {
             get {
                 return f_IsVoice;
@@ -139,6 +146,7 @@ namespace Meebey.SmartIrc4net
 
             string usermode = data.RawMessageArray[8];
             bool op = false;
+            bool halfop = false;
             bool voice = false;
             bool ircop = false;
             bool away = false;
@@ -154,6 +162,9 @@ namespace Meebey.SmartIrc4net
                     case '@':
                         op = true;
                     break;
+                    case '%':
+                        halfop = true;
+                    break;
                     case '+':
                         voice = true;
                     break;
@@ -164,6 +175,7 @@ namespace Meebey.SmartIrc4net
             }
             whoInfo.f_IsAway = away;
             whoInfo.f_IsOp = op;
+            whoInfo.f_IsHalfop = halfop;
             whoInfo.f_IsVoice = voice;
             whoInfo.f_IsIrcOp = ircop;
             

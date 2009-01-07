@@ -55,9 +55,11 @@ namespace Meebey.SmartIrc4net
 #endif
 
         /// <summary>
-        /// 
+        /// Gets or sets the halfop flag of the user (+h)
         /// </summary>
-        /// <value> </value>
+        /// <remarks>
+        /// only used with channel sync
+        /// </remarks>
         public bool IsHalfop {
             get {
                 return _IsHalfop;
